@@ -1,95 +1,156 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client"
 
-export default function Home() {
+import React from "react";
+import {
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Grid,
+  TextField,
+  Typography,
+  Stack,
+  Button,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
+import { Field, Form, Formik } from "formik";
+import * as yup from "yup";
+import { useDispatch } from "react-redux";
+// import { login } from "../store/auth";
+import { useState } from "react";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import Image from 'next/image';
+
+import notebook from "../public/notebook.png"
+
+const initialValues = { email: "", password: "" };
+
+const validationSchema = yup.object().shape({
+  email: yup.string().email("Email Invalid").required("Email is required"),
+  password: yup
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .max(12)
+    .matches(/\d/, "Password must contain at least 1 number")
+    .matches(/[a-z]/, "Password must contain at least 1 lowercase letter")
+    .matches(/[A-Z]/, "Password must contain at least 1 uppercase letter")
+    .matches(
+      /[!, ?, @, #, $, %, ^, &, *, (, ), -, _, +, =]/,
+      "Password must contain at least 1 special character"
+    )
+    .required("Password is required"),
+});
+
+const page = () => {
+
+  const [showPassword, setShowPassword] = useState(false);
+  console.log("showPassword: ", showPassword);
+
+  //const dispatch = useDispatch();
+
+  const handleSubmit = (values, actions) => {
+    actions.setSubmitting(false);
+    //  dispatch(login(values, navigate));
+    //  actions.resetForm();
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
+    <>
+      <Box sx={{ width: "100%", height: "100.5vh", color: "#F5F5F5" }}>
+        <Typography variant="h2" color="#1976D2" align="center" component="h1">
+          Apotheke Admin Page
+        </Typography>
+        <Grid container p={5} alignItems="center" justifyContent="center">
+          <Grid item md={6} xl={8} display={{ xs: "none", sm: "block" }}>
             <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
+              src={notebook}
+              style={{maxHeight:"60vh"}}
             />
-          </a>
-        </div>
-      </div>
+          </Grid>
+          <Grid item xs={12} md={6} xl={4}>
+            <Card sx={{ maxWidth: "100%", padding: "2rem" }}>
+              <CardContent>
+                <Typography variant="h3" align="center" mb={3} color="#1976D2">
+                  Admin Login
+                </Typography>
+                <Formik
+                  initialValues={initialValues}
+                  onSubmit={handleSubmit}
+                  validationSchema={validationSchema}
+                >
+                  {({ values, errors, touched, handleChange }) => (
+                    <Form noValidate>
+                      <Field
+                        as={TextField}
+                        type="email"
+                        variant="outlined"
+                        label="Email"
+                        name="email"
+                        fullWidth
+                        margin="dense"
+                        error={Boolean(errors.email) && Boolean(touched.email)}
+                        helperText={Boolean(touched.email) ? errors.email : ""}
+                      />
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+                      <Field
+                        as={TextField}
+                        type={showPassword ? "text" : "password"}
+                        variant="outlined"
+                        label="Password"
+                        name="password"
+                        fullWidth
+                        margin="dense"
+                        error={
+                          Boolean(errors.password) && Boolean(touched.password)
+                        }
+                        helperText={
+                          Boolean(touched.password) ? errors.password : ""
+                        }
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end" sx={{ pr: 2 }}>
+                              <IconButton
+                                edge="end"
+                                onClick={() => setShowPassword(!showPassword)}
+                              >
+                                {showPassword ? (
+                                  <VisibilityIcon />
+                                ) : (
+                                  <VisibilityOffIcon />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                      <Stack justifyContent="center" alignItems="center" mt={2}>
+                        <Button variant="contained" type="submit" size="large">
+                          {" "}
+                          Login
+                        </Button>
+                      </Stack>
+                    </Form>
+                  )}
+                </Formik>
+                <Typography
+                  variant="subtitle2"
+                  align="center"
+                  component="div"
+                  onClick={() => navigate("/register")}
+                  sx={{ cursor: "pointer", mt: 1, color: "goldenrod" }}
+                >
+                  {" "}
+                  Don't have an account ?
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Box>
+    </>
   );
 }
+
+export default page;
