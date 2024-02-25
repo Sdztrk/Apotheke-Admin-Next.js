@@ -5,7 +5,6 @@ import {
   Box,
   Card,
   CardContent,
-  CardMedia,
   Grid,
   TextField,
   Typography,
@@ -16,17 +15,17 @@ import {
 } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import * as yup from "yup";
-import { useDispatch } from "react-redux";
-// import { login } from "../store/auth";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Image from 'next/image';
-
 import notebook from "../public/notebook.png"
+import { login } from "@/app/GlobalRedux/Features/authSlice"
+import { useRouter } from "next/navigation";
+
 
 const initialValues = { email: "", password: "" };
-
 const validationSchema = yup.object().shape({
   email: yup.string().email("Email Invalid").required("Email is required"),
   password: yup
@@ -46,15 +45,36 @@ const validationSchema = yup.object().shape({
 const page = () => {
 
   const [showPassword, setShowPassword] = useState(false);
-  console.log("showPassword: ", showPassword);
+  const dispatch = useDispatch();
+  const router = useRouter();
+  // const [isAdmin, setIsAdmin] = useState(false); // State to track admin status
 
-  //const dispatch = useDispatch();
+  const [refreshed, setRefreshed] = useState(false);
 
-  const handleSubmit = (values, actions) => {
+  useEffect(() => {
+    // Check if the page is refreshed for the first time
+    if (!refreshed) {
+      setRefreshed(true); // Set the refreshed state to true
+      return;
+    }
+
+    // If the page is refreshed after the first time, perform other actions here
+    console.log('Page refreshed');
+  }, [dispatch, login]);
+
+  const handleLoginSubmit = async (values, actions) => {
     actions.setSubmitting(false);
-    //  dispatch(login(values, navigate));
-    //  actions.resetForm();
+    const isAdmin = await dispatch(login(values));
+    console.log(isAdmin)
+
+    if (!isAdmin) {
+      // Don't route to the dashboard if user is not an admin
+      return;
+    }
+
+    router.push("/dashboard");
   };
+
 
   return (
     <>
@@ -65,8 +85,10 @@ const page = () => {
         <Grid container p={5} alignItems="center" justifyContent="center">
           <Grid item md={6} xl={8} display={{ xs: "none", sm: "block" }}>
             <Image
+              alt="notebook image"
               src={notebook}
-              style={{maxHeight:"60vh"}}
+              style={{ maxHeight: "auto" }}
+              loading="lazy"
             />
           </Grid>
           <Grid item xs={12} md={6} xl={4}>
@@ -77,7 +99,7 @@ const page = () => {
                 </Typography>
                 <Formik
                   initialValues={initialValues}
-                  onSubmit={handleSubmit}
+                  onSubmit={handleLoginSubmit}
                   validationSchema={validationSchema}
                 >
                   {({ values, errors, touched, handleChange }) => (
@@ -134,16 +156,6 @@ const page = () => {
                     </Form>
                   )}
                 </Formik>
-                <Typography
-                  variant="subtitle2"
-                  align="center"
-                  component="div"
-                  onClick={() => navigate("/register")}
-                  sx={{ cursor: "pointer", mt: 1, color: "goldenrod" }}
-                >
-                  {" "}
-                  Don't have an account ?
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
