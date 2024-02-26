@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 
 
 const url = process.env.REACT_APP_API_BASEURL
-console.log(url)
 
 const authSlice = createSlice({
     name: 'auth',
