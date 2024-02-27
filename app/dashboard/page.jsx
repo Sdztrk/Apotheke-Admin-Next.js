@@ -151,7 +151,7 @@ const Page = () => {
                   <td>{product.illness}</td>
                   <td>€{product.price}</td>
                   <td>
-                    <img src={product.image} alt={product.name} style={{ width: '50px', height: '50px' }} />
+                    <img src={product.image} alt={product.name} style={{ objectFit:"cover", width:"75px" }} />
                   </td>
                 </tr>
               ))}

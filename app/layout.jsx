@@ -7,8 +7,8 @@ import Providers from '@/app/GlobalRedux/provider';
 
 const RootLayout = ({ children }) => {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
-      <body>
+    <html lang="en" suppressHydrationWarning={false}>
+      <body suppressHydrationWarning={false}>
         <Providers>
           <ToastContainer />
           {children}

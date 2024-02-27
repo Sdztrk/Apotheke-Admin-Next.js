@@ -97,7 +97,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const menu = [
   { title: "Dahboard", icon: <DashboardIcon />, path: "/dashboard" },
-  { title: "Neu Hinzufügen", icon: <InventoryIcon />, path: "/dashboard/medikamenteHinzufügen" },
+  { title: "Neu Hinzufügen", icon: <InventoryIcon />, path: "/dashboard/addMedicine" },
   { title: "Sales", icon: <ReceiptIcon />, path: "/dashboard/sales" },
   { title: "Purchases", icon: <ShoppingCartIcon />, path: "/dashboard/purchases" },
 ];

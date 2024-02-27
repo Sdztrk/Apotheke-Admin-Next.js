@@ -36,9 +36,7 @@ export const { setProducts,setSelectedProduct } = productSlice.actions;
 export const getProducts = () => async (dispatch) => {
   try {
     const res = await axios.get(`${url}/api/v1/product`);
-    
     const data = res?.data?.data || [];
-    
     dispatch(setProducts({ data }));
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -60,7 +58,30 @@ export const getProductById = (productId) => async (dispatch) => {
       toast.error('Server error');
     }
   };
-  
+
+  // Async action to create a product
+  export const createProduct = (values) => async(dispatch)=> {
+    try{
+      const token = sessionStorage.getItem("token")
+      const headers = {
+        Authorization:`Bearer ${token}`,
+        "Content-Type":"application/json"
+      }
+      const res = await axios.post(`${url}/api/v1/product`, values, {headers})
+      console.log(res)
+      if (res.status === 201) {
+        dispatch(setProducts({data:res.data}))
+        toast.success("Medikamente erfolgreich hinzugefügt")
+      }
+      else{
+        console.log("An error entstanden")
+      }
+    }
+    catch(err) {
+      console.log(err)
+      toast.error("Server Error")
+    }
+  } 
 
   // Async action to update a product by ID on the server using Axios
   export const updateProduct = (productId, updatedProductData) => async (dispatch) => {
@@ -87,6 +108,31 @@ export const getProductById = (productId) => async (dispatch) => {
       toast.error('Server error');
     }
   };
+
+  // Async action to delete a product by ID on the server using Axios
+export const deleteProduct = (productId) => async (dispatch) => {
+  try {
+    const token = sessionStorage.getItem('token'); // Retrieve the bearer token from sessionStorage
+    const headers = { 
+      Authorization: `Bearer ${token}`, 
+      'Content-Type': 'application/json' // Set the Content-Type header
+    }; 
+
+    const res = await axios.delete(`${url}/api/v1/product/${productId}`, { headers });
+
+    if (res.status === 204) {
+      // Optionally, refetch the product list to reflect changes
+      dispatch(getProducts());
+      toast.success('Produkt erfolgreich etntfernt');
+    } else {
+      console.error('Error deleting product:', res.data.message);
+      toast.error('Error bei der Entfernung');
+    }
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    toast.error('Server error');
+  }
+};
 
 
 export default productSlice.reducer;
