@@ -11,8 +11,6 @@ const url = process.env.REACT_APP_API_BASEURL;
 const storedSelectedProduct = typeof window !== "undefined" ? sessionStorage.getItem("selectedProduct") : null
 const initialSelectedProduct = storedSelectedProduct ? JSON.parse(storedSelectedProduct) : null;
 
-
-
 const productSlice = createSlice({
     name: 'product',
     initialState: {

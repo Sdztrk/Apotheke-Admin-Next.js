@@ -81,7 +81,7 @@ const MedicinePage = () => {
           Entfernen
         </Button>
       </Box>
-      <TableContainer component={Paper} sx={{ maxWidth: "700px" }}>
+      <TableContainer component={Paper} sx={{ maxWidth: "700px",boxShadow: '0 4px 6px rgba(0,0,0,0.7)' }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -162,7 +162,7 @@ const MedicinePage = () => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-          When Sie dieses Medikament entfernen, wird es auch aus der Datenbank gelöscht!
+          Wenn Sie dieses Medikament entfernen, wird es auch aus der Datenbank gelöscht!
           </DialogContentText>
         </DialogContent>
         <DialogActions>

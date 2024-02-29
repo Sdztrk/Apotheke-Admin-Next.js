@@ -92,7 +92,7 @@ const page = () => {
             />
           </Grid>
           <Grid item xs={12} md={6} xl={4}>
-            <Card sx={{ maxWidth: "100%", padding: "2rem" }}>
+            <Card sx={{ maxWidth: "100%", padding: "2rem",boxShadow: '0 4px 12px rgba(0,0,0,0.7)' }}>
               <CardContent>
                 <Typography variant="h3" align="center" mb={3} color="#1976D2">
                   Login
