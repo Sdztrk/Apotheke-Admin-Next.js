@@ -5,7 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const url = process.env.REACT_APP_API_BASEURL;
-console.log(url)
+// console.log(url)
 
 // Retrieve stored selected product from session storage or set it to null
 const storedSelectedProduct = typeof window !== "undefined" ? sessionStorage.getItem("selectedProduct") : null
@@ -68,7 +68,7 @@ export const getProductById = (productId) => async (dispatch) => {
         "Content-Type":"application/json"
       }
       const res = await axios.post(`${url}/api/v1/product`, values, {headers})
-      console.log(res)
+      // console.log(res)
       if (res.status === 201) {
         dispatch(setProducts({data:res.data}))
         toast.success("Medikamente erfolgreich hinzugefügt")
@@ -93,7 +93,7 @@ export const getProductById = (productId) => async (dispatch) => {
       }; 
   
       const res = await axios.put(`${url}/api/v1/product/${productId}`, updatedProductData, { headers });
-      console.log(res)
+      // console.log(res)
   
       if (res.status === 202) {
         dispatch(getProducts()); // Optional: Produktliste erneut abrufen, um Änderungen zu aktualisieren

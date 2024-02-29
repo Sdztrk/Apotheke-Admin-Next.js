@@ -80,7 +80,7 @@ const page = () => {
     <>
       <Box sx={{ width: "100%", height: "100.5vh", color: "#F5F5F5" }}>
         <Typography variant="h2" color="#1976D2" align="center" component="h1">
-          Apotheke Admin Page
+          Willkommen Admin
         </Typography>
         <Grid container p={5} alignItems="center" justifyContent="center">
           <Grid item md={6} xl={8} display={{ xs: "none", sm: "block" }}>
@@ -95,7 +95,7 @@ const page = () => {
             <Card sx={{ maxWidth: "100%", padding: "2rem" }}>
               <CardContent>
                 <Typography variant="h3" align="center" mb={3} color="#1976D2">
-                  Admin Login
+                  Login
                 </Typography>
                 <Formik
                   initialValues={initialValues}

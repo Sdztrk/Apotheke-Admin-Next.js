@@ -2,8 +2,7 @@
 
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { makeStyles } from '@mui/styles';
-import { Table, TableBody, TableCell, TableContainer, TableRow, Typography, CardMedia, Box, Paper, TableHead } from '@mui/material';
+import { Typography, CardMedia, Box } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import AppBar from '@mui/material/AppBar';
@@ -12,30 +11,41 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import TextField from '@mui/material/TextField';
-import { updateProduct } from "@/app/GlobalRedux/Features/productSlice";
+import { updateProduct, deleteProduct } from "@/app/GlobalRedux/Features/productSlice";
 import { useDispatch } from 'react-redux';
+import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper } from '@mui/material';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const useStyles = makeStyles({
-  root: {
-    maxWidth: 600,
-    margin: 'auto',
-    marginTop: 20,
-    marginBottom: 20,
-  },
-});
 
 const MedicinePage = () => {
   const dispatch = useDispatch();
 
   const medicine = useSelector((state) => state.product.selectedProduct);
-  console.log(medicine)
+  // console.log(medicine)
 
   const [open, setOpen] = React.useState(false);
   const [values, setValues] = React.useState(medicine);
+  const [alertOpen, setAlertOpen] = React.useState(false);
+
+  const handleAlertOpen = () => {
+    setAlertOpen(true);
+  };
+
+  const handleAlertClose = () => {
+    setAlertOpen(false);
+  };
+  const handleDelete = async () => {
+    await dispatch(deleteProduct(medicine._id))
+    setAlertOpen(false)
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -51,71 +61,52 @@ const MedicinePage = () => {
   };
 
   const medicineArray = medicine ? Object.keys(values) : [];
-  //  console.log(medicineArray)
+  // console.log(medicineArray)
 
   return (
-    <Box sx={{ width: "98vw", display: "flex", flexDirection: "row-reverse", justifyContent: "space-around", marginLeft:"100px" }}>
-      <CardMedia
-        image={medicine?.image}
-        title={medicine?.name}
-        sx={{ height: "300px", width: "400px", position: "fix", top: "150px", right: "150px", objectFit: "contain" }}
-        component="img"
-      />
-      <Box>
+    <Box sx={{ width: "98vw", display: "flex", flexDirection: "row", justifyContent: "space-evenly", marginBottom: "50px" }}>
+      <Box sx={{ position: "fixed", top: "20%", right: "10%" }} >
+        <CardMedia
+          image={medicine?.image}
+          title={medicine?.name}
+          sx={{ height: "300px", width: "400px", position: "fix", top: "150px", right: "150px", objectFit: "contain" }}
+          component="img"
+        />
+      </Box>
+      <Box sx={{ position: "fixed", top: "30%", right: "35%", display: "flex", flexDirection: "column", gap: "20px" }} >
         <Button variant="outlined" onClick={handleClickOpen}>
           Bearbeiten
         </Button>
-        <Button variant="outlined">
+        <Button variant="outlined" onClick={handleAlertOpen}>
           Entfernen
         </Button>
       </Box>
-      {/* <TableContainer sx={{ maxWidth: "600px" }}>
-        <Table aria-label="customized table">
+      <TableContainer component={Paper} sx={{ maxWidth: "700px" }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                <Typography variant="subtitle1" fontWeight="bold">Medikament</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="subtitle1" fontWeight="bold">  Erklärung</Typography>
+              </TableCell>
+            </TableRow>
+          </TableHead>
           <TableBody>
             {Object.entries(medicine).map(([key, value]) => (
               <TableRow key={key}>
-                <TableCell component="th" scope="row">
-                  {key}
+                <TableCell>
+                  <Typography sx={{textTransform:"capitalize"}} variant="body1" fontWeight="bold">{key}</Typography>
                 </TableCell>
-                <TableCell>{value}</TableCell>
+                <TableCell>
+                  <Typography sx={{textTransform:"capitalize"}} variant="body1">{typeof value === 'object' ? JSON.stringify(value) : value}</Typography>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-      </TableContainer> */}
-
-
-
-      <table style={{maxWidth:"500px"}}>
-        <caption>Medicine Information</caption>
-        <thead>
-          <tr>
-            <th>Property</th>
-            <th>Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          {medicine ? Object.entries(medicine).map(([property, value]) => (
-            <tr key={property}>
-              <td>{property}</td>
-              <td>{value}</td>
-            </tr>
-          )) : ""
-        }
-        </tbody>
-      </table>
-
-      {/* <TableBody sx={{maxWidth:"800px"}}>
-        {Object.entries(medicine).map(([key, value]) => (
-          <TableRow key={key}>
-            <TableCell component="th" scope="row">
-              {key}
-            </TableCell>
-            <TableCell >{value}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody> */}
-
+      </TableContainer>
       <Dialog
         fullScreen
         open={open}
@@ -142,6 +133,8 @@ const MedicinePage = () => {
         </AppBar>
         {/* Add Form */}
         <Box sx={{ px: 64, py: 8 }}>
+        <Box sx={{textAlign:"center"}} fontWeight="bold">Medikament Bearbeiten</Box> 
+
           <form>
             {medicineArray
               .filter((key) => key !== '__v' && key !== '_id')
@@ -158,6 +151,30 @@ const MedicinePage = () => {
           </form>
         </Box>
       </Dialog>
+      <Dialog
+        open={alertOpen}
+        onClose={handleAlertClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title" >
+          {"Sicher?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+          When Sie dieses Medikament entfernen, wird es auch aus der Datenbank gelöscht!
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleAlertClose}>Zurück</Button>
+          <Button onClick={handleDelete } autoFocus>
+            Entfernen
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Box></Box>
+      <Box></Box>
+
     </Box>
   );
 };

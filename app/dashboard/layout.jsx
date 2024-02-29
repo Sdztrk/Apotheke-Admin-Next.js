@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react'
-import DashboardComponent from '@/components/dashboardComponent'
+import DashboardComponent from '@/components/Dashboardcomponent'
 
 const DasboardLayout = ({ children }) => {
     return (

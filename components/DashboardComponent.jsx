@@ -21,6 +21,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import { Menu, MenuItem } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useDispatch, useSelector } from 'react-redux'
@@ -97,9 +98,10 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const menu = [
   { title: "Dahboard", icon: <DashboardIcon />, path: "/dashboard" },
-  { title: "Neu Hinzufügen", icon: <InventoryIcon />, path: "/dashboard/addMedicine" },
-  { title: "Sales", icon: <ReceiptIcon />, path: "/dashboard/sales" },
-  { title: "Purchases", icon: <ShoppingCartIcon />, path: "/dashboard/purchases" },
+  { title: "Alle Medikamente", icon: <InventoryIcon />, path: "/dashboard/allMedicine" },
+  { title: "Neu Hinzufügen", icon: <MedicalServicesIcon />, path: "/dashboard/addMedicine" },
+  { title: "Verkäufe", icon: <ReceiptIcon />, path: "/dashboard/sales" },
+  { title: "Einkäufe", icon: <ShoppingCartIcon />, path: "/dashboard/purchases" },
 ];
 
 const DashboardComponent = () => {
@@ -139,7 +141,7 @@ const DashboardComponent = () => {
 
   const dispatch = useDispatch()
   const currentUser = useSelector((state) => state.auth.currentUser)
-  console.log(currentUser)
+  // console.log(currentUser)
   const router = useRouter()
   const handleLogout = () => {
     dispatch(logout())

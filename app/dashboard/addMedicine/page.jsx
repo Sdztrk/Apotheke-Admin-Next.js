@@ -4,9 +4,31 @@ import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
-import {createProduct} from "@/app/GlobalRedux/Features/productSlice"
+import { createProduct } from "@/app/GlobalRedux/Features/productSlice";
 import { useDispatch } from 'react-redux';
 
+// English to German field name mapping
+const fieldNameMapping = {
+  name: 'Name',
+  brand: 'Marke',
+  manufacturer: 'Hersteller',
+  pzn: 'PZN',
+  image: 'Bild',
+  distributionForm: 'Verteilungsform',
+  packageSize: 'Packungsgröße',
+  illness: 'Krankheit',
+  manufacturerCountry: 'Herstellungsland',
+  type: 'Typ',
+  discount: 'Rabatt',
+  activeIngredient: 'Wirkstoff',
+  dosage: 'Dosierung',
+  sideEffects: 'Nebenwirkungen',
+  pregnancyNotification: 'Schwangerschaftshinweis',
+  price: 'Preis',
+  expirationDate: 'Verfallsdatum',
+  applicationMethod: 'Anwendungsmethode',
+  description: 'Beschreibung'
+};
 
 const initialValues = {
   name: '',
@@ -30,14 +52,6 @@ const initialValues = {
   description: ''
 };
 
-const fieldNames = [
-  'Name', 'Marke', 'Hersteller', 'PZN', 'Bild', 'Verteilungsform', 'Packungsgröße',
-  'Krankheit', 'Herstellungsland', 'Typ', 'Rabatt', 'Wirkstoff', 'Dosierung',
-  'Nebenwirkungen', 'Schwangerschaftshinweis', 'Preis', 'Verfallsdatum', 'Anwendungsmethode',
-  'Beschreibung'
-];
-
-
 const addMedicine = () => {
   const dispatch = useDispatch()
   const [values, setValues] = useState(initialValues);
@@ -50,18 +64,21 @@ const addMedicine = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await dispatch(createProduct(values))
+    console.log(values)
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems:"center" }}>
+    <>
+    <Box sx={{textAlign:"center"}} fontWeight="bold">Medikament Hinzufügen</Box> 
+    <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
       <form
-        style={{ maxWidth: "900px", marginBottom:"150px" , display:"flex", flexDirection:"column", minWidth:"900px"}}
+        style={{ maxWidth: "900px", marginBottom: "150px", display: "flex", flexDirection: "column", minWidth: "900px" }}
         onSubmit={handleSubmit}
       >
-        {fieldNames.map((fieldName) => (
+        {Object.keys(initialValues).map((fieldName) => (
           <TextField
             key={fieldName}
-            label={fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}
+            label={fieldNameMapping[fieldName]} // Use the mapped German label
             name={fieldName}
             value={values[fieldName]}
             onChange={handleChange}
@@ -70,11 +87,11 @@ const addMedicine = () => {
             required
           />
         ))}
-        <Button sx={{marginTop:"50px", width:"250px"}} type="submit" variant="contained" color="primary">Senden</Button>
+        <Button sx={{ marginTop: "50px", width: "250px" }} type="submit" variant="contained" color="primary">Senden</Button>
       </form>
     </Box>
+    </>
   );
 };
-
 
 export default addMedicine;
