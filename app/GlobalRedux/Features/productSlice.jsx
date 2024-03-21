@@ -111,6 +111,7 @@ export const getProductById = (productId) => async (dispatch) => {
 export const deleteProduct = (productId) => async (dispatch) => {
   try {
     const token = sessionStorage.getItem('token'); // Retrieve the bearer token from sessionStorage
+    if(!token) throw new Error("Du bist nict authorized");
     const headers = { 
       Authorization: `Bearer ${token}`, 
       'Content-Type': 'application/json' // Set the Content-Type header
