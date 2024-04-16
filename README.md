@@ -1,5 +1,5 @@
 # Ergebnis
-![Overview](./public/admin.mp4)
+![Overview](./public/admin.gif)
 
 # Apotheke Admin
 
