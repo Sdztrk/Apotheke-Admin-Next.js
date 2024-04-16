@@ -1,3 +1,32 @@
+# Ergebnis
+![Overview](./public/admin.mp4)
+
+# Apotheke Admin
+
+Apotheke Admin ist eine Webanwendung, die für Apothekenadministratoren entwickelt wurde, um Medikamente zu verwalten, Statistiken anzuzeigen und verschiedene administrative Aufgaben auszuführen.
+
+## Funktionen
+
+- **Statistiken**: Anzeigen umfassender Statistiken zu Medikamentenverwendung, Verkäufen usw.
+- **Medikamentenverwaltung**: Administratoren können alle Medikamente in einer Tabellenform anzeigen, mit Optionen zum Anzeigen von Details, Bearbeiten und Löschen.
+- **Detailseite**: Beim Klicken auf ein Medikament können Administratoren auf eine detaillierte Seite mit Informationen über das Medikament und Optionen zum Bearbeiten oder Löschen zugreifen.
+- **Medikament hinzufügen**: Administratoren können neue Medikamente in das System einfügen.
+
+## Verwendete Technologien
+
+- **Next.js**: Next.js wird als Framework für servergerenderte React-Anwendungen verwendet und bietet eine ausgezeichnete Leistung und Entwicklererfahrung.
+- **Material-UI**: Material-UI wird zur Erstellung der Benutzeroberflächenkomponenten mit React verwendet und bietet eine Reihe von anpassbaren und barrierefreien UI-Komponenten.
+- **Redux Toolkit**: Redux Toolkit wird zur Zustandsverwaltung verwendet und erleichtert die Verwaltung und Aktualisierung des Anwendungszustands auf vorhersehbare Weise.
+- **Axios**: Axios wird zur Behandlung von HTTP-Anfragen verwendet, um mit der Backend-API zu interagieren.
+- **Formik & Yup**: Formik wird zur Formularverwaltung und -validierung verwendet, zusammen mit Yup für die Schema-Validierung.
+- **React Google Charts**: React Google Charts wird zur Anzeige von Diagrammen und Grafiken zur Visualisierung von Statistiken verwendet.
+- **React Toastify**: React Toastify wird zur Anzeige von Benachrichtigungen für den Benutzer verwendet.
+
+
+
+
+
+
 # Apotheke Admin
 
 Apotheke Admin is a web application designed for pharmacy administrators to manage medicines, view statistics, and perform various administrative tasks.
